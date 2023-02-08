@@ -1,6 +1,7 @@
 let defaultNumOfmarkers = 16;
 let defaultcolor = "#000000";
 let colorMode = 'default';
+let defaultGridBackgroundColor = "white";
 
 //filing the grid with default options 16x16 px 
 fillGrid(defaultNumOfmarkers);
@@ -24,10 +25,9 @@ function fillGrid(numOfmarkers){
                     console.log("clicked");
                 }else if(colorMode == 'random'){
                     e.target.style.backgroundColor = getRandomColor();
-                }else if(colorMode == 'random'){
-                    //e.target.style.backgroundColor = getRandomColor();
-                }
-               
+                }else if(colorMode == 'modern'){
+                    e.target.style.backgroundColor = getModernColor();
+                }     
             }
         });
         div.addEventListener('mousedown' , (e) => {
@@ -70,16 +70,13 @@ const defaultColor = document.querySelector('.default-color');
 container.addEventListener('mouseleave', ()  => {
     //enteredGrid = false;
     clickedGrid = false;
-    console.log("leaved the grid");
 });
 container.addEventListener('mousedown' , () => {
     clickedGrid = true;
-    console.log("clicked");
 });
 
 container.addEventListener("mouseup" , () => {
     clickedGrid = false;
-    console.log("unclicked")
 });
 randomColor.addEventListener('click', () => { //change the color-mode to random
     colorMode = 'random';
@@ -90,10 +87,13 @@ modernColor.addEventListener('click', () => {
 defaultColor.addEventListener('click', () => {
     colorMode = 'default';
 });
+
+
+//function for clearing the grid
 function clearAll(){
     const markers =document.querySelectorAll(".marker");
     markers.forEach(marker => {
-        marker.classList.remove("changeColor"); 
+       marker.style.backgroundColor = defaultGridBackgroundColor;
     });
 }
 
@@ -112,5 +112,16 @@ function getRandomColor() {
     for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+}
+
+function getModernColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    let portion=  "" ;
+    for (let i = 0; i < 2; i++) {
+        portion += letters[Math.floor(Math.random() * 16)];
+    }
+    color = color  + portion + portion+ portion;
     return color;
 }
