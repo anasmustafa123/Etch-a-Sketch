@@ -1,5 +1,5 @@
 let defaultNumOfmarkers = 16;
-let defaultcolor = "#000000";
+let default_color = "#000000";
 let colorMode = 'default';
 let defaultGridBackgroundColor = "white";
 
@@ -19,16 +19,14 @@ function fillGrid(numOfmarkers){
         container.appendChild(div);
         div.addEventListener('mouseenter' , (e) => {
             if(clickedGrid){ //changing the color of the square when clicked inside the grid and hovered
-                if(colorMode === 'default'){
-                    e.target.style.backgroundColor = defaultColor;
-                    e.target.classList.add("changeColor");
-                    console.log("clicked");
+                if(colorMode == 'default'){
+                    e.target.style.backgroundColor = default_color;
                 }else if(colorMode == 'random'){
                     e.target.style.backgroundColor = getRandomColor();
                 }else if(colorMode == 'modern'){
                     e.target.style.backgroundColor = getModernColor();
                 }     
-            }
+             }
         });
         div.addEventListener('mousedown' , (e) => {
             e.target.classList.add("changeColor"); //changing the color of the square when clicked
