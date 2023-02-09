@@ -19,7 +19,6 @@ function fillGrid(numOfmarkers){
         let height = container.clientHeight/numOfmarkers + "px"; //height of the grid
         div.style.cssText = `float: left; width: ${width}; height: ${height} `;
         div.classList.add('marker');
-        div.style.color = "red";
         container.appendChild(div);
 
         //prevent grapping the divs 
