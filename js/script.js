@@ -1,3 +1,8 @@
+const container = document.querySelector('.gridContainer');
+const randomColor = document.querySelector('.random-color');
+const modernColor = document.querySelector('.modern-color');
+const defaultColor = document.querySelector('.default-color');
+
 let defaultNumOfmarkers = 16;
 let default_color = "#000000";
 let colorMode = 'default';
@@ -6,38 +11,35 @@ let defaultGridBackgroundColor = "white";
 //filing the grid with default options 16x16 px 
 fillGrid(defaultNumOfmarkers);
 
-//fuction for filling the grid with default options
+//function for filling the grid with default options
 function fillGrid(numOfmarkers){
-    const container = document.querySelector('.gridContainer');
     for(let i = 0; i < numOfmarkers*numOfmarkers; i++){
         const  div = document.createElement("div");
-        let width = 600/numOfmarkers + "px" ; //width the grid
-        let height = 500/numOfmarkers + "px"; //height of the grid
+        let width = container.clientWidth/numOfmarkers + "px" ; //width the grid
+        let height = container.clientHeight/numOfmarkers + "px"; //height of the grid
         div.style.cssText = `float: left; width: ${width}; height: ${height} `;
         div.classList.add('marker');
         div.style.color = "red";
         container.appendChild(div);
+
+        //prevent grapping the divs 
+        div.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+        });
+
         div.addEventListener('mouseenter' , (e) => {
             if(clickedGrid){ //changing the color of the square when clicked inside the grid and hovered
-                if(colorMode == 'default'){
-                    e.target.style.backgroundColor = default_color;
-                }else if(colorMode == 'random'){
-                    e.target.style.backgroundColor = getRandomColor();
-                }else if(colorMode == 'modern'){
-                    e.target.style.backgroundColor = getModernColor();
-                }     
-             }
+                changeColor(e);      
+            }
         });
         div.addEventListener('mousedown' , (e) => {
-            e.target.classList.add("changeColor"); //changing the color of the square when clicked
-            console.log("clicked");
+            changeColor(e);
         });
     } 
 }
 
 //setting the clearing button
 const clearGrid = document.getElementById('clearGrid');
-console.log(clearGrid.style);
 clearGrid.addEventListener('click', clearAll);
 
 //setting the input slider
@@ -45,28 +47,26 @@ const slider  = document.querySelector('input');
 const range  = document.querySelector('.range');
 range.textContent = "16x16";
 slider.addEventListener('input', () => {
-    console.log(slider.value);
     range.textContent = slider.value  +"x"+ slider.value; 
-    removeAll(document.querySelectorAll('.marker'));
+});
+slider.addEventListener('change', () => {
+    console.log("asfd");
+    removeAll();
     fillGrid(slider.value);
 });
 
-
 //clearing the grid so the container would cover the  grid
 const div = document.createElement("div");
-div.style.clear = "all;"
+div.style.clear = "all";
 
 //clickedGrig is true when the pointer click any of the Grid
 let clickedGrid = false;
 
 
-const container = document.querySelector('.gridContainer');
-const randomColor = document.querySelector('.random-color');
-const modernColor = document.querySelector('.modern-color');
-const defaultColor = document.querySelector('.default-color');
 
+
+//because it wouldn't count as mouserelease if it happened outside of the grid 
 container.addEventListener('mouseleave', ()  => {
-    //enteredGrid = false;
     clickedGrid = false;
 });
 container.addEventListener('mousedown' , () => {
@@ -76,7 +76,10 @@ container.addEventListener('mousedown' , () => {
 container.addEventListener("mouseup" , () => {
     clickedGrid = false;
 });
-randomColor.addEventListener('click', () => { //change the color-mode to random
+
+
+//changinh the modes
+randomColor.addEventListener('click', () => { 
     colorMode = 'random';
 })
 modernColor.addEventListener('click', () => { 
@@ -98,9 +101,7 @@ function clearAll(){
 
 //function to remove all element from a nodeList
 function removeAll(nodeList) {
-    for (let i = 0; i < nodeList.length; i++) {
-        nodeList[i].remove();
-    }
+    container.innerHTML = '';
 }
 
 //function to return random color
@@ -112,7 +113,7 @@ function getRandomColor() {
     }
     return color;
 }
-
+//return random version of grey color
 function getModernColor() {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -122,4 +123,15 @@ function getModernColor() {
     }
     color = color  + portion + portion+ portion;
     return color;
+}
+
+//change color based on the current mode 
+function changeColor(e){
+    if(colorMode == 'default'){
+        e.target.style.backgroundColor = default_color;
+    }else if(colorMode == 'random'){
+        e.target.style.backgroundColor = getRandomColor();
+    }else if(colorMode == 'modern'){
+        e.target.style.backgroundColor = getModernColor();
+    }  
 }
