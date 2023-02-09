@@ -1,49 +1,47 @@
-const container = document.querySelector('.gridContainer');
-const randomColor = document.querySelector('.random-color');
-const modernColor = document.querySelector('.modern-color');
-const defaultColor = document.querySelector('.default-color');
-
 let defaultNumOfmarkers = 16;
 let default_color = "#000000";
 let colorMode = 'default';
 let defaultGridBackgroundColor = "white";
+let clickedGrid = false; //clickedGrig is true when the pointer click any of the Grid
+
+const container = document.querySelector('.gridContainer');
+const randomColor = document.querySelector('.random-color');
+const modernColor = document.querySelector('.modern-color');
+const defaultColor = document.querySelector('.default-color');
+const slider  = document.querySelector('input');
+const range  = document.querySelector('.range');
+const clearGrid = document.getElementById('clearGrid');
+
+//because it wouldn't count as mouserelease if it happened outside of the grid 
+container.addEventListener('mouseleave', ()  => {
+    clickedGrid = false;
+});
+container.addEventListener('mousedown' , () => {
+    clickedGrid = true;
+});
+
+container.addEventListener("mouseup" , () => {
+    clickedGrid = false;
+});
+
+//changing the modes
+randomColor.addEventListener('click', () => { 
+    colorMode = 'random';
+})
+modernColor.addEventListener('click', () => { 
+    colorMode = 'modern';
+});
+defaultColor.addEventListener('click', () => {
+    colorMode = 'default';
+});
 
 //filing the grid with default options 16x16 px 
 fillGrid(defaultNumOfmarkers);
 
-//function for filling the grid with default options
-function fillGrid(numOfmarkers){
-    let width = container.clientWidth/numOfmarkers + "px" ; //width the grid
-    let height = container.clientHeight/numOfmarkers + "px"; //height of the grid
-    for(let i = 0; i < numOfmarkers*numOfmarkers; i++){
-        const  div = document.createElement("div");
-        div.style.cssText = `float: left; width: ${width}; height: ${height} `;
-        div.classList.add('marker');
-        container.appendChild(div);
-
-        //prevent grapping the divs 
-        div.addEventListener('dragstart', (e) => {
-            e.preventDefault();
-        });
-
-        div.addEventListener('mouseenter' , (e) => {
-            if(clickedGrid){ //changing the color of the square when clicked inside the grid and hovered
-                changeColor(e);      
-            }
-        });
-        div.addEventListener('mousedown' , (e) => {
-            changeColor(e);
-        });
-    } 
-}
-
 //setting the clearing button
-const clearGrid = document.getElementById('clearGrid');
 clearGrid.addEventListener('click', clearAll);
 
 //setting the input slider
-const slider  = document.querySelector('input');
-const range  = document.querySelector('.range');
 range.textContent = "16x16";
 slider.addEventListener('input', () => {
     range.textContent = slider.value  +"x"+ slider.value; 
@@ -58,36 +56,19 @@ slider.addEventListener('change', () => {
 const div = document.createElement("div");
 div.style.clear = "all";
 
-//clickedGrig is true when the pointer click any of the Grid
-let clickedGrid = false;
+//function for filling the grid with default options
+function fillGrid(numOfmarkers){
+    let width = container.clientWidth/numOfmarkers + "px" ; //width the grid
+    let height = container.clientHeight/numOfmarkers + "px"; //height of the grid
+for(let i = 0; i < numOfmarkers*numOfmarkers; i++){
+    const  div = document.createElement("div");
 
-
-
-
-//because it wouldn't count as mouserelease if it happened outside of the grid 
-container.addEventListener('mouseleave', ()  => {
-    clickedGrid = false;
-});
-container.addEventListener('mousedown' , () => {
-    clickedGrid = true;
-});
-
-container.addEventListener("mouseup" , () => {
-    clickedGrid = false;
-});
-
-
-//changinh the modes
-randomColor.addEventListener('click', () => { 
-    colorMode = 'random';
-})
-modernColor.addEventListener('click', () => { 
-    colorMode = 'modern';
-});
-defaultColor.addEventListener('click', () => {
-    colorMode = 'default';
-});
-
+    div.style.cssText = `float: left; width: ${width}; height: ${height} `;
+    div.classList.add('marker');
+    container.appendChild(div);
+    isDrawing(div);    
+} 
+}
 
 //function for clearing the grid
 function clearAll(){
@@ -96,7 +77,6 @@ function clearAll(){
        marker.style.backgroundColor = defaultGridBackgroundColor;
     });
 }
-
 
 //function to remove all element from a nodeList
 function removeAll(nodeList) {
@@ -133,4 +113,20 @@ function changeColor(e){
     }else if(colorMode == 'modern'){
         e.target.style.backgroundColor = getModernColor();
     }  
+}
+
+function isDrawing(div){
+    //prevent grapping the divs 
+    div.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+    });
+
+    div.addEventListener('mouseenter' , (e) => {
+        if(clickedGrid){ //changing the color of the square when clicked inside the grid and hovered
+            changeColor(e);      
+        }
+    });
+    div.addEventListener('mousedown' , (e) => {
+        changeColor(e);
+    });
 }
