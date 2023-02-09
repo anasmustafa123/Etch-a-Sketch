@@ -3,10 +3,8 @@
 Project from the odin-project 
 
 
-problem to solve:
-
--slider loading time is alot
-
+live preview:
+https://anasmustafa123.github.io/Etch-a-Sketch/
 
 
 <a href="https://www.flaticon.com/free-icons/paint" title="paint icons">Paint icons created by Freepik - Flaticon</a>
