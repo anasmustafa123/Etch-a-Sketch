@@ -13,10 +13,10 @@ fillGrid(defaultNumOfmarkers);
 
 //function for filling the grid with default options
 function fillGrid(numOfmarkers){
+    let width = container.clientWidth/numOfmarkers + "px" ; //width the grid
+    let height = container.clientHeight/numOfmarkers + "px"; //height of the grid
     for(let i = 0; i < numOfmarkers*numOfmarkers; i++){
         const  div = document.createElement("div");
-        let width = container.clientWidth/numOfmarkers + "px" ; //width the grid
-        let height = container.clientHeight/numOfmarkers + "px"; //height of the grid
         div.style.cssText = `float: left; width: ${width}; height: ${height} `;
         div.classList.add('marker');
         container.appendChild(div);
