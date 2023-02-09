@@ -1,5 +1,6 @@
 body{
     display: flex;
+    flex-direction: column;
     margin: 0px; 
     align-items: center;
     justify-content: center;
@@ -7,7 +8,24 @@ body{
     height: 100vh;
     background-color: bisque;
 }
-
+.appContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+}
+.footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 98%;
+    padding: 10px;
+    font-size: 20px;
+}
 .gridContainer{
     background:  #ffffff;
     border: 1px solid; 
